@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoop & Swirl | Artisanal Ice Cream</title>
+    <style>
+        /* --- CSS RESET & VARIABLES --- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-color: #fff9f5;
+            --text-dark: #2d1810;
+            --primary: #ff6b8b;
+            --primary-dark: #d84364;
+            --secondary: #ffb86c;
+            --accent-mint: #a8e6cf;
+            --accent-berry: #9b59b6;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --transition-smooth: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- BACKGROUND ANIMATION OBJECTS --- */
+        .floating-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: floatUp infinite ease-in-out alternate;
+        }
+
+        .bubble-1 { width: 120px; height: 120px; background: var(--primary); top: 10%; left: 5%; animation-duration: 8s; }
+        .bubble-2 { width: 200px; height: 200px; background: var(--secondary); top: 60%; left: 80%; animation-duration: 12s; }
+        .bubble-3 { width: 150px; height: 150px; background: var(--accent-mint); top: 75%; left: 10%; animation-duration: 10s; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-40px) rotate(15deg); }
+        }
+
+        /* --- NAVIGATION --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 249, 245, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span { color: var(--secondary); }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8%;
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 550px;
+            animation: slideInLeft 1s ease-out forwards;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+            display: inline-block;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #66524a;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(255, 107, 139, 0.4);
+            transition: var(--transition-smooth);
+        }
+
+        .cta-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 107, 139, 0.5);
+        }
+
+        .hero-visual {
+            position: relative;
+            width: 420px;
+            height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: slideInRight 1s ease-out forwards;
+        }
+
+        .hero-img {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.15));
+            animation: heroFloat 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroFloat {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
+        }
+
+        /* --- FLAVORS / MENU SECTION --- */
+        .flavors-section {
+            position: relative;
+            padding: 6rem 8%;
+            z-index: 1;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #776057;
+            margin-bottom: 4rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-img-wrapper {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 1.5rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            transition: var(--transition-smooth);
+        }
+
+        .card:hover .card-img {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            color: #66524a;
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* --- KEYFRAME ANIMATIONS --- */
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            background: #2d1810;
+            color: #f7e1d7;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 900px) {
+            .hero {
+                flex-direction: column;
+                justify-content: center;
+                padding-top: 7rem;
+                text-align: center;
+            }
+
+            .hero-content {
+                margin-bottom: 3rem;
+            }
+
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero-visual {
+                width: 280px;
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Background Shapes -->
+    <div class="floating-bg">
+        <div class="bubble bubble-1"></div>
+        <div class="bubble bubble-2"></div>
+        <div class="bubble bubble-3"></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header>
+        <a href="#" class="logo">Scoop<span>&</span>Swirl</a>
+        <nav>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#flavors">Flavors</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1>Happiness in Every <span>Single Scoop</span></h1>
+            <p>Handcrafted daily using organic milk, natural botanicals, and fair-trade single-origin cocoa.</p>
+            <a href="#flavors" class="cta-btn">Explore Flavors</a>
+        </div>
+        <div class="hero-visual">
+            <!-- Inline SVG Ice Cream Cone Graphic -->
+            <svg class="hero-img" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+                <!-- Waffle Cone -->
+                <polygon points="110,230 190,230 150,370" fill="#e0a96d" stroke="#c48a4c" stroke-width="3" />
+                <path d="M120,250 L180,250 M125,270 L175,270 M130,290 L170,290 M135,310 L165,310 M140,330 L160,330" stroke="#c48a4c" stroke-width="2" />
+                <!-- Bottom Scoop (Vanilla) -->
+                <circle cx="150" cy="210" r="45" fill="#fffdd0" />
+                <!-- Middle Scoop (Strawberry) -->
+                <circle cx="150" cy="160" r="50" fill="#ff6b8b" />
+                <!-- Top Scoop (Mint) -->
+                <circle cx="150" cy="110" r="45" fill="#a8e6cf" />
+                <!-- Drip effect -->
+                <path d="M110,120 Q105,150 115,160 Q125,170 120,130" fill="#a8e6cf" />
+                <!-- Cherry on top -->
+                <circle cx="150" cy="55" r="14" fill="#d84364" />
+                <path d="M150,41 Q160,20 175,25" stroke="#702c3b" stroke-width="3" fill="none" stroke-linecap="round"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Flavors Section -->
+    <section class="flavors-section" id="flavors">
+        <h2 class="section-title">Signature Flavors</h2>
+        <p class="section-subtitle">Discovered and refined by our master churners</p>
+
+        <div class="grid">
+            <!-- Flavor Card 1 -->
+            <div class="card">
+                <div class="card-img-wrapper">
+                    <svg class="card-img" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="70,120 130,120 100,190" fill="#e0a96d" />
+                        <circle cx="100" cy="95" r="40" fill="#ff6b8b" />
+                        <circle cx="90" cy="85" r="6" fill="#ffffff" opacity="0.4" />
+                    </svg>
+                </div>
+                <h3>Wild Berry Bliss</h3>
+                <p>Sweet mountain strawberries blended with fresh organic cream.</p>
+                <div class="price">$4.50</div>
+            </div>
+
+            <!-- Flavor Card 2 -->
+            <div class="card">
+                <div class="card-img-wrapper">
+                    <svg class="card-img" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="70,120 130,120 100,190" fill="#e0a96d" />
+                        <circle cx="100" cy="95" r="40" fill="#a8e6cf" />
+                        <!-- Chocolate Chips -->
+                        <rect x="90" y="80" width="6" height="6" rx="2" fill="#4a2e2b" />
+                        <rect x="110" y="95" width="7" height="7" rx="2" fill="#4a2e2b" />
+                        <rect x="85" y="105" width="5" height="5" rx="2" fill="#4a2e2b" />
+                    </svg>
+                </div>
+                <h3>Mint Chip Wave</h3>
+                <p>Refreshing garden mint with dark Belgian chocolate flakes.</p>
+                <div class="price">$4.75</div>
+            </div>
+
+            <!-- Flavor Card 3 -->
+            <div class="card">
+                <div class="card-img-wrapper">
+                    <svg class="card-img" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="70,120 130,120 100,190" fill="#e0a96d" />
+                        <circle cx="100" cy="95" r="40" fill="#7b3f00" />
+                        <!-- Caramel Drizzle -->
+                        <path d="M70,85 Q100,105 130,85" stroke="#ffb86c" stroke-width="5" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3>Salted Fudge</h3>
+                <p>70% dark chocolate infused with sea salt and caramel ribbon.</p>
+                <div class="price">$5.00</div>
+            </div>
+
+            <!-- Flavor Card 4 -->
+            <div class="card">
+                <div class="card-img-wrapper">
+                    <svg class="card-img" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="70,120 130,120 100,190" fill="#e0a96d" />
+                        <circle cx="100" cy="95" r="40" fill="#ffb86c" />
+                        <circle cx="105" cy="70" r="10" fill="#d84364" />
+                    </svg>
+                </div>
+                <h3>Mango Tango</h3>
+                <p>Tropical Alphonso mango sorbet topped with a cherry twist.</p>
+                <div class="price">$4.50</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Scoop & Swirl Ice Cream Parlor. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
